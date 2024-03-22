@@ -9,12 +9,12 @@ with open('Variables.txt') as f:
 		os.environ[key] = value
 # Global variables
 API_KEY = os.environ.get('API_KEY')
+PRINT_GEEK_ID = 27
 ENDPOINT_URL = 'https://api.printify.com/v1/'
 HEADERS = {
 	'Authorization': f'Bearer {API_KEY}',
 	'Content-Type': 'application/json;charset=utf-8'
 }
-PRINT_GEEK_ID = 27
 
 # getting shop id
 shop_id_response = requests.get(ENDPOINT_URL + 'shops.json', headers=HEADERS)
@@ -22,7 +22,8 @@ shop_id_response.raise_for_status()
 shop_data = shop_id_response.json()
 shop_id = shop_data[0]['id']
 
-# getting product id
+
+# getting the first product id assuming that's the template
 product_list_response = requests.get(ENDPOINT_URL + f'shops/{shop_id}/products.json', headers=HEADERS)
 product_list_response.raise_for_status()
 product_list_data = product_list_response.json()
@@ -39,10 +40,10 @@ def get_blueprint_variants():
 
 
 # uploading an image
-def create_product():
+def push_to_api(image_url, image_name):
 	image_data = {
-		'file_name': 'test_image.png',
-		'url': 'https://cdn.mydesigns.io/design/file/408dfbb6-77d1-42c6-9bdd-54d8a5a6e056.jpeg?Expires=1713647585&Signature=gD~vXx6MO2Awym90FKb1GwULKXWIJZcovS66WlyiCFlzJhnCAha74XhdjqMezQ27AHNcwAblRa2LhqRmh7n4kmx8dTwpAKZlMcCfe-IqNuEXAcUl5qWm~r4QJVQvxRhWStkO6Ato8mwNi7G6ShdwL-o-cIibTshXTWv7hvQgzVpbQNc4Dp56pfiO7j5t38RV4OoH~urW8m-uYZkDvH6E5EXJbxEWCZZRtVpWXv-h90FlshmSBHBo5xZM09oYaETv1VADYH8MA~Gx94aLX2VUBU2FtB1hUk92lcRqp5xgkcHEWK8--lxm1nI2qoXU7uBVwju~eiaID7d35WI~u-z4ew__&Key-Pair-Id=K3GS08609RBYMI'
+		'file_name': image_name + '.png',
+		'url': image_url
 	}
 	image_post = requests.post(ENDPOINT_URL + 'uploads/images.json', headers=HEADERS, json=image_data)
 	response = image_post.json()
@@ -97,6 +98,15 @@ def create_product():
 	else:
 		error = create_product_test.json
 		print(json.dumps(error, indent=4))
+
+
+def create_product():
+	with open('Export.CSV', 'r') as file:
+		reader = csv.DictReader(file)
+		for row in reader:
+			image_name = row['Print File_slot_file_name']
+			image_url = row['Print File_slot_image_url']
+			push_to_api(image_url=image_url, image_name=image_name)
 
 
 create_product()
