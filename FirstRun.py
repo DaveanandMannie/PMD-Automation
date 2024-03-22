@@ -1,7 +1,7 @@
-import requests
 import os
-import json
 import csv
+import json
+import requests
 
 with open('Variables.txt') as f:
 	for line in f:
@@ -100,6 +100,7 @@ def push_to_api(image_url, image_name):
 		print(json.dumps(error, indent=4))
 
 
+# noinspection PyTypeChecker
 def create_product():
 	with open('Export.CSV', 'r') as file:
 		reader = csv.DictReader(file)
