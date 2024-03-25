@@ -38,7 +38,7 @@ def PrintGeek_blueprints_csv():
 shop_id_response = requests.get(ENDPOINT_URL + 'shops.json', headers=HEADERS)
 shop_id_response.raise_for_status()
 shop_data = shop_id_response.json()
-shop_id = shop_data[1]['id']
+shop_id = shop_data[0]['id']
 
 # TODO replace with "find_template" and use set templates instead
 # getting the first product id assuming that's the template
