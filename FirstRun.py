@@ -3,6 +3,7 @@ import csv
 import json
 import requests
 
+# TODO revoke and reinstate API key while utilizing windows environ
 with open('Variables.txt') as f:
 	for line in f:
 		key, value = line.strip().split('=')
@@ -16,13 +17,30 @@ HEADERS = {
 	'Content-Type': 'application/json;charset=utf-8'
 }
 
+
+# one time function to create csv file of the blueprints
+def PrintGeek_blueprints_csv():
+	api_response = requests.get(ENDPOINT_URL + f'catalog/print_providers/{PRINT_GEEK_ID}.json/', headers=HEADERS)
+	data = api_response.json()
+	blueprints_data = [(blueprint['id'], blueprint['title']) for blueprint in data['blueprints']]
+	csv_file_path = 'Blueprints.csv'
+	with open(csv_file_path, 'w', newline='') as csvfile:
+		fieldnames = ['ID', 'Title']
+		writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+		writer.writeheader()
+		for blueprint_id, title in blueprints_data:
+			writer.writerow({'ID': blueprint_id, 'Title': title})
+	print('CSV file is finished ')
+
+
+# TODO replace with "find_shop" and use global shop variables
 # getting shop id
 shop_id_response = requests.get(ENDPOINT_URL + 'shops.json', headers=HEADERS)
 shop_id_response.raise_for_status()
 shop_data = shop_id_response.json()
-shop_id = shop_data[0]['id']
+shop_id = shop_data[1]['id']
 
-
+# TODO replace with "find_template" and use set templates instead
 # getting the first product id assuming that's the template
 product_list_response = requests.get(ENDPOINT_URL + f'shops/{shop_id}/products.json', headers=HEADERS)
 product_list_response.raise_for_status()
@@ -33,14 +51,13 @@ product_id = product_list_data['data'][0]['id']
 def get_blueprint_variants():
 	product_response = requests.get(ENDPOINT_URL + f'shops/{shop_id}/products/{product_id}.json', headers=HEADERS)
 	product_data = product_response.json()
-	# will get a list of settings for all variants
-	# print(json.dumps(product_data["print_areas"], indent=4))
-	variants = product_data['print_areas'][0]['variant_ids']
-	return variants
+	all_available_variants = product_data['variants']
+	enabled_variants = [variant['id'] for variant in all_available_variants if variant.get('is_enabled')]
+	return enabled_variants
 
 
 # uploading an image
-def push_to_api(image_url, image_name):
+def push_to_api(image_url, image_name, product_title, product_description, products_tags):
 	image_data = {
 		'file_name': image_name + '.png',
 		'url': image_url
@@ -60,13 +77,14 @@ def push_to_api(image_url, image_name):
 			'is_enabled': True
 		} for variant_values in product_variants
 	]
-
+	# product properties
 	product_data = {
-		'title': 'Product',
-		'description': 'Good Product',
+		'title': product_title,
+		'description': product_description,
 		'blueprint_id': 6,
 		'print_provider_id': PRINT_GEEK_ID,
 		'variants': list_of_variants_dict,
+		'tags': products_tags,
 		'print_areas': [
 			{
 				'variant_ids': product_variants,
@@ -96,8 +114,8 @@ def push_to_api(image_url, image_name):
 	if create_product_test.status_code == 200:
 		print('Product created!')
 	else:
-		error = create_product_test.json
-		print(json.dumps(error, indent=4))
+		print('something went wrong')
+		print(create_product_test.status_code)
 
 
 # noinspection PyTypeChecker
@@ -107,22 +125,17 @@ def create_product():
 		for row in reader:
 			image_name = row['Print File_slot_file_name']
 			image_url = row['Print File_slot_image_url']
-			push_to_api(image_url=image_url, image_name=image_name)
+			title = row['Listing.Title']
+			description = row['Listing.Description']
+			tags = [tag for tag in row['Tags.All Tags'].strip().split(',')]
+			push_to_api(
+				image_url=image_url,
+				image_name=image_name,
+				product_title=title,
+				product_description=description,
+				products_tags=tags
+			)
+	print('Product creation complete.')
 
 
 create_product()
-
-
-# one time function to create csv file of the blueprints
-def PrintGeek_blueprints_csv():
-	api_response = requests.get(ENDPOINT_URL + f'catalog/print_providers/{PRINT_GEEK_ID}.json/', headers=HEADERS)
-	data = api_response.json()
-	blueprints_data = [(blueprint['id'], blueprint['title']) for blueprint in data['blueprints']]
-	csv_file_path = 'Blueprints.csv'
-	with open(csv_file_path, 'w', newline='') as csvfile:
-		fieldnames = ['ID', 'Title']
-		writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-		writer.writeheader()
-		for blueprint_id, title in blueprints_data:
-			writer.writerow({'ID': blueprint_id, 'Title': title})
-	print('CSV file is finished ')
