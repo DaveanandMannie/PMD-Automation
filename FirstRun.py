@@ -3,6 +3,7 @@ import csv
 import json
 import requests
 import Templates
+
 # TODO revoke and reinstate API key while utilizing windows environ
 with open('Variables.txt') as f:
 	for line in f:
@@ -17,6 +18,9 @@ HEADERS = {
 	'Content-Type': 'application/json;charset=utf-8'
 }
 ETSY_SHOP_ID = 15047741
+TEMPLATES_DICT = {
+	'test': Templates.Test
+}
 
 
 def PrintGeek_blueprints_csv() -> None:
@@ -135,10 +139,12 @@ def push_to_api(
 
 
 # noinspection PyTypeChecker
-def create_product_from_csv() -> None:
-	# replace with modular Templates
-	template_price = Templates.Test.price
-	template_variants = Templates.Test.variants
+def create_product_from_csv(template: str) -> None:
+	chosen_template = None
+	if template in TEMPLATES_DICT:
+		chosen_template = TEMPLATES_DICT[template]
+	template_price = chosen_template.price
+	template_variants = chosen_template.variants
 	with open('Export.CSV', 'r') as file:
 		reader = csv.DictReader(file)
 		for row in reader:
@@ -160,3 +166,6 @@ def create_product_from_csv() -> None:
 			)
 	print('Product creation complete.')
 	return
+
+
+create_product_from_csv('test')
