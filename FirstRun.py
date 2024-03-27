@@ -2,8 +2,8 @@ import os
 import csv
 import json
 import requests
-import Templates
 from typing import Union
+import Templates
 
 # TODO revoke and reinstate API key while utilizing windows environ
 with open('Variables.txt') as f:
@@ -140,6 +140,14 @@ def push_to_api(
 		return created_product_id
 
 
+def publish_product(product_id: str, publish_json: dict[str: bool]) -> requests.Response:
+	publish_response = requests.post(
+		ENDPOINT_URL + f'shops/{ETSY_SHOP_ID}/products{product_id}/publish.json',
+		json=publish_json
+	)
+	return publish_response
+
+
 def create_product_from_csv(template: str) -> None:
 	""" Calls the production creation function with data from templates/profiles and MyDesign export """
 	chosen_template: Union[Templates.Template, None] = None
@@ -148,6 +156,7 @@ def create_product_from_csv(template: str) -> None:
 	template_price: int = chosen_template.price
 	template_variants: list[int] = chosen_template.variants
 	template_blueprint: int = chosen_template.blueprint
+	template_publish_data: dict[str: bool] = chosen_template.publish_data
 	with open('Export.CSV', 'r') as file:
 		reader = csv.DictReader(file)
 		for row in reader:
@@ -162,7 +171,7 @@ def create_product_from_csv(template: str) -> None:
 			description: str = row['Listing.Description']
 			# noinspection PyTypeChecker
 			tags: list[str] = [tag for tag in row['Tags.All Tags'].strip().split(',')]
-			push_to_api(
+			new_product_id = push_to_api(
 				image_url=image_url,
 				image_name=image_name,
 				product_title=title,
@@ -173,5 +182,6 @@ def create_product_from_csv(template: str) -> None:
 				product_variant_list=template_variants,
 				blueprint_id=template_blueprint
 			)
+			publish_product(product_id=new_product_id, publish_json=template_publish_data)
 	print('Product creation complete.')
 	return

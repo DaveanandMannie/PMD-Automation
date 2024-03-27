@@ -1,9 +1,17 @@
 class Template:
-	def __init__(self, variants: list, price: int, name: str, blueprint: int):
+	def __init__(
+			self,
+			variants: list[int],
+			price: int,
+			name: str,
+			blueprint: int,
+			publish_data: dict[str: bool]
+	):
 		self.variants = variants
 		self.price = price
 		self.name = name
 		self.blueprint = blueprint
+		self.publish_data = publish_data
 
 	def __str__(self):
 		return f"{self.name} template"
@@ -21,5 +29,13 @@ Test = Template(
 		12106, 12107, 12108, 12109, 12110, 12111, 12124, 12125, 12126, 12127, 12128, 12129, 12148, 12149, 12150,
 		12151, 12152, 12153, 12172, 12173, 12174, 12175, 12176, 12177, 12190, 12191, 12192, 12193, 12194, 12195,
 		23955, 24005, 24021, 24031, 24039, 24088, 24138, 24153, 24164, 24171
-	]
+	],
+	publish_data={
+		'title': True,
+		'description': True,
+		'images': True,
+		'variants': True,
+		'shipping_template': True
+	}
+
 )
