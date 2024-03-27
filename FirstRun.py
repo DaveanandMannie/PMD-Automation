@@ -142,7 +142,7 @@ def push_to_api(
 # noinspection PyTypeChecker
 def create_product_from_csv(template: str) -> None:
 	""" Calls the production creation function with data from templates/profiles and MyDesign export """
-	chosen_template = None
+	chosen_template: Templates.Template = None
 	if template in TEMPLATES_DICT:
 		chosen_template = TEMPLATES_DICT[template]
 	template_price = chosen_template.price
