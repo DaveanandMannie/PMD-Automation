@@ -3,6 +3,7 @@ import csv
 import json
 import requests
 import Templates
+from typing import Union
 
 # TODO revoke and reinstate API key while utilizing windows environ
 with open('Variables.txt') as f:
@@ -139,24 +140,28 @@ def push_to_api(
 		return created_product_id
 
 
-# noinspection PyTypeChecker
 def create_product_from_csv(template: str) -> None:
 	""" Calls the production creation function with data from templates/profiles and MyDesign export """
-	chosen_template: Templates.Template = None
+	chosen_template: Union[Templates.Template, None] = None
 	if template in TEMPLATES_DICT:
-		chosen_template = TEMPLATES_DICT[template]
-	template_price = chosen_template.price
-	template_variants = chosen_template.variants
-	template_blueprint = chosen_template.blueprint
+		chosen_template: Templates.Template = TEMPLATES_DICT[template]
+	template_price: int = chosen_template.price
+	template_variants: list[int] = chosen_template.variants
+	template_blueprint: int = chosen_template.blueprint
 	with open('Export.CSV', 'r') as file:
 		reader = csv.DictReader(file)
 		for row in reader:
 			# change based on the MyDesign template
-			image_name = row['Print File_slot_file_name']
-			image_url = row['Print File_slot_image_url']
-			title = row['Listing.Title']
-			description = row['Listing.Description']
-			tags = [tag for tag in row['Tags.All Tags'].strip().split(',')]
+			# noinspection PyTypeChecker
+			image_name: str = row['Print File_slot_file_name']
+			# noinspection PyTypeChecker
+			image_url: str = row['Print File_slot_image_url']
+			# noinspection PyTypeChecker
+			title: str = row['Listing.Title']
+			# noinspection PyTypeChecker
+			description: str = row['Listing.Description']
+			# noinspection PyTypeChecker
+			tags: list[str] = [tag for tag in row['Tags.All Tags'].strip().split(',')]
 			push_to_api(
 				image_url=image_url,
 				image_name=image_name,
