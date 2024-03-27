@@ -18,7 +18,7 @@ HEADERS = {
 	'Content-Type': 'application/json;charset=utf-8'
 }
 ETSY_SHOP_ID = 15047741
-TEMPLATES_DICT = {
+TEMPLATES_DICT: dict[str, type:Templates.Template] = {
 	'test': Templates.Test
 }
 
