@@ -75,7 +75,7 @@ def push_to_api(
 		products_tags: list,
 		product_variant_list: list,
 		price: int,
-		shop_id: int) -> None:
+		shop_id: int) -> str:
 	""" Takes all required Printify fields and sends a POST request through the API """
 	# pushes the image to the api -> consider making a separate function
 	image_data = {'file_name': image_name + '.png', 'url': image_url}
@@ -84,7 +84,7 @@ def push_to_api(
 	image_id = response["id"]
 	if image_post.status_code != 200:
 		print(json.dumps(response, indent=4))
-		return
+		return 'Image upload failure'
 
 	product_variants = product_variant_list
 	list_of_variants_dict = [
@@ -127,12 +127,11 @@ def push_to_api(
 		headers=HEADERS,
 		json=product_data
 	)
+	created_product_data = create_product_test.json()
 	if create_product_test.status_code == 200:
+		created_product_id = created_product_data['id']
 		print('Product created!')
-	else:
-		print('something went wrong')
-		print(create_product_test.status_code)
-	return
+		return created_product_id
 
 
 # noinspection PyTypeChecker
@@ -143,6 +142,7 @@ def create_product_from_csv() -> None:
 	with open('Export.CSV', 'r') as file:
 		reader = csv.DictReader(file)
 		for row in reader:
+			# change based on the MyDesign template
 			image_name = row['Print File_slot_file_name']
 			image_url = row['Print File_slot_image_url']
 			title = row['Listing.Title']
@@ -160,5 +160,3 @@ def create_product_from_csv() -> None:
 			)
 	print('Product creation complete.')
 	return
-# create_product()
-# uploading an image
