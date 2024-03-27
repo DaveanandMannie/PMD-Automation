@@ -166,6 +166,3 @@ def create_product_from_csv(template: str) -> None:
 			)
 	print('Product creation complete.')
 	return
-
-
-create_product_from_csv('test')
