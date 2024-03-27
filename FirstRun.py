@@ -79,7 +79,8 @@ def push_to_api(
 		products_tags: list,
 		product_variant_list: list,
 		price: int,
-		shop_id: int) -> str:
+		shop_id: int,
+		blueprint_id: int) -> str:
 	""" Takes all required Printify fields and sends a POST request through the API """
 	# pushes the image to the api -> consider making a separate function
 	image_data = {'file_name': image_name + '.png', 'url': image_url}
@@ -102,7 +103,7 @@ def push_to_api(
 	product_data = {
 		'title': product_title,
 		'description': product_description,
-		'blueprint_id': 6,
+		'blueprint_id': blueprint_id,
 		'print_provider_id': PRINT_GEEK_ID,
 		'variants': list_of_variants_dict,
 		'tags': products_tags,
@@ -146,6 +147,7 @@ def create_product_from_csv(template: str) -> None:
 		chosen_template = TEMPLATES_DICT[template]
 	template_price = chosen_template.price
 	template_variants = chosen_template.variants
+	template_blueprint = chosen_template.blueprint
 	with open('Export.CSV', 'r') as file:
 		reader = csv.DictReader(file)
 		for row in reader:
@@ -163,7 +165,8 @@ def create_product_from_csv(template: str) -> None:
 				products_tags=tags,
 				shop_id=ETSY_SHOP_ID,
 				price=template_price,
-				product_variant_list=template_variants
+				product_variant_list=template_variants,
+				blueprint_id=template_blueprint
 			)
 	print('Product creation complete.')
 	return
