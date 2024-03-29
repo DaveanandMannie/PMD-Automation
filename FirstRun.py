@@ -11,11 +11,11 @@ with open('Variables.txt') as f:
 		key, value = line.strip().split('=')
 		os.environ[key] = value
 # Global variables
-API_KEY = os.environ.get('API_KEY')
+PRINTIFY_API_KEY = os.environ.get('API_KEY')
 PRINT_GEEK_ID = 27
 ENDPOINT_URL = 'https://api.printify.com/v1/'
 HEADERS = {
-	'Authorization': f'Bearer {API_KEY}',
+	'Authorization': f'Bearer {PRINTIFY_API_KEY}',
 	'Content-Type': 'application/json;charset=utf-8'
 }
 ETSY_SHOP_ID = 15047741
@@ -187,5 +187,3 @@ def create_product_from_csv(template: str) -> None:
 			publish_product(product_id=new_product_id, publish_json=template_publish_data)
 	print(f'Product creation complete.{new_product_id}')
 	return
-
-# create_product_from_csv('test')
