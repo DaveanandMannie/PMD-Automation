@@ -141,9 +141,11 @@ def push_to_api(
 
 
 def publish_product(product_id: str, publish_json: dict[str: bool]) -> requests.Response:
+	""" Publishes a product through the connected sales channel """
 	publish_response = requests.post(
-		ENDPOINT_URL + f'shops/{ETSY_SHOP_ID}/products{product_id}/publish.json',
-		json=publish_json
+		ENDPOINT_URL + f'shops/{ETSY_SHOP_ID}/products/{product_id}/publish.json',
+		json=publish_json,
+		headers=HEADERS
 	)
 	return publish_response
 
@@ -183,5 +185,7 @@ def create_product_from_csv(template: str) -> None:
 				blueprint_id=template_blueprint
 			)
 			publish_product(product_id=new_product_id, publish_json=template_publish_data)
-	print('Product creation complete.')
+	print(f'Product creation complete.{new_product_id}')
 	return
+
+# create_product_from_csv('test')

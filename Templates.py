@@ -31,11 +31,13 @@ Test = Template(
 		23955, 24005, 24021, 24031, 24039, 24088, 24138, 24153, 24164, 24171
 	],
 	publish_data={
-		'title': True,
-		'description': True,
-		'images': True,
-		'variants': True,
-		'shipping_template': True
+		"title": True,
+		"description": True,
+		"images": True,
+		"variants": True,
+		"tags": True,
+		"keyFeatures": True,
+		"shipping_template": True
 	}
 
 )
