@@ -86,10 +86,11 @@ def push_to_api(
 	# pushes the image to the api -> consider making a separate function
 	image_data = {'file_name': image_name + '.png', 'url': image_url}
 	image_post = requests.post(ENDPOINT_URL + 'uploads/images.json', headers=HEADERS, json=image_data)
-	response = image_post.json()
-	image_id = response["id"]
+	image_post.raise_for_status()
+	image_response = image_post.json()
+	image_id = image_response["id"]
 	if image_post.status_code != 200:
-		print(json.dumps(response, indent=4))
+		print(json.dumps(image_response, indent=4))
 		return 'Image upload failure'
 
 	product_variants = product_variant_list
@@ -128,13 +129,15 @@ def push_to_api(
 			}
 		]
 	}
-	create_product_test = requests.post(
+	create_product = requests.post(
 		ENDPOINT_URL + f'shops/{shop_id}/products.json',
 		headers=HEADERS,
 		json=product_data
 	)
-	created_product_data = create_product_test.json()
-	if create_product_test.status_code == 200:
+	create_product.raise_for_status()
+	created_product_data = create_product.json()
+
+	if create_product.status_code == 200:
 		created_product_id = created_product_data['id']
 		print('Product created!')
 		return created_product_id

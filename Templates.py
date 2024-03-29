@@ -39,5 +39,4 @@ Test = Template(
 		"keyFeatures": True,
 		"shipping_template": True
 	}
-
 )
