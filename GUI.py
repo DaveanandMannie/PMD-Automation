@@ -30,10 +30,7 @@ def template_select(value: str) -> str:
 	return selected_template.get()
 
 
-def automation() -> None:
-	# print(f'file name: {selected_file_name.get()}: {type(selected_file_name.get())}')
-	# print(f'template name:{selected_template.get()}: {type(selected_template.get())}')
-	# print(f'Publish?:{publish_bool.get()}: {type(publish_bool.get())}')
+def printify_automation() -> None:
 	create_product_from_csv(
 		template=selected_template.get(),
 		publish=publish_bool.get(),
@@ -81,6 +78,6 @@ publish_label: tkinter.Label = tkinter.Label(root, bg='white', width=20, text='S
 publish_label.pack()
 
 # final call for automations
-final_button: tkinter.Button = tkinter.Button(root, text='Start', command=automation)
+final_button: tkinter.Button = tkinter.Button(root, text='Start', command=printify_automation)
 final_button.pack()
 root.mainloop()
