@@ -153,7 +153,7 @@ def publish_product(product_id: str, publish_json: dict[str: bool]) -> requests.
 	return publish_response
 
 
-def create_product_from_csv(template: str) -> None:
+def create_product_from_csv(template: str, publish: bool) -> None:
 	""" Calls the production creation function with data from templates/profiles and MyDesign export """
 	chosen_template: Union[Templates.Template, None] = None
 	if template in TEMPLATES_DICT:
@@ -187,6 +187,7 @@ def create_product_from_csv(template: str) -> None:
 				product_variant_list=template_variants,
 				blueprint_id=template_blueprint
 			)
-			publish_product(product_id=new_product_id, publish_json=template_publish_data)
+			if publish:
+				publish_product(product_id=new_product_id, publish_json=template_publish_data)
 	print(f'Product creation complete.{new_product_id}')
 	return
