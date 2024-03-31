@@ -33,7 +33,7 @@ Test = Template(
 	publish_data={
 		"title": True,
 		"description": True,
-		"images": True,
+		"images": True,  # change if I find away to have custom mocks via url
 		"variants": True,
 		"tags": True,
 		"keyFeatures": True,
