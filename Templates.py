@@ -1,4 +1,5 @@
 class Template:
+	""" Printify API product values """
 	def __init__(
 			self,
 			variants: list[int],
@@ -17,7 +18,7 @@ class Template:
 		return f"{self.name} template"
 
 
-Test = Template(
+Popular_Gildan_5000 = Template(
 	name='Test template',
 	price=3599,
 	blueprint=6,

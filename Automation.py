@@ -20,7 +20,7 @@ HEADERS = {
 }
 ETSY_SHOP_ID = 15047741
 TEMPLATES_DICT: dict[str, type:Templates.Template] = {
-	'test': Templates.Test
+	'Popular Gildan 5000': Templates.Popular_Gildan_5000
 }
 
 
