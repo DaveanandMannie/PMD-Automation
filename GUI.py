@@ -1,7 +1,7 @@
 import tkinter
 from tkinter import filedialog
 import os
-from Automation import create_product_from_csv
+from Automation import create_product_from_csv, TEMPLATES_DICT
 
 
 def select_csv() -> str:
@@ -66,7 +66,7 @@ checkbox: tkinter.Checkbutton = tkinter.Checkbutton(
 checkbox.pack()
 
 # template drop down
-templates: list[str] = ['test', 'test2', 'test3']  # change with modular templates
+templates: list[str] = [key for key in TEMPLATES_DICT]
 selected_template: tkinter.StringVar = tkinter.StringVar(root)
 selected_template.set(templates[0])
 # noinspection PyTypeChecker
