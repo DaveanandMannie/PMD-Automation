@@ -1,5 +1,6 @@
 class Template:
 	""" Printify API product values """
+
 	def __init__(
 			self,
 			variants: list[int],
