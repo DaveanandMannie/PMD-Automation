@@ -76,6 +76,7 @@ def get_product_info(product_id: int, shop_id: int) -> dict:
 	}
 	return product_info
 
+
 def push_to_api(
 		image_url: str,
 		image_name: str,
