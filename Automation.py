@@ -61,7 +61,7 @@ def get_first_product_id(shop_id: int) -> int:
 	product_list_response = requests.get(ENDPOINT_URL + f'shops/{shop_id}/products.json', headers=HEADERS)
 	product_list_response.raise_for_status()
 	product_list_data = product_list_response.json()
-	product_id = product_list_data['data'][1]['id']
+	product_id = product_list_data['data'][0]['id']
 	return product_id
 
 
