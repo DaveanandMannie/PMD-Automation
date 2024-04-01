@@ -20,7 +20,9 @@ HEADERS = {
 }
 ETSY_SHOP_ID = 15047741
 TEMPLATES_DICT: dict[str, type:Templates.Template] = {
-	'Popular Gildan 5000': Templates.Popular_Gildan_5000
+	'Gildan 5000': Templates.Popular_Gildan_5000,
+	'Bella 3001': Templates.Popular_Bella_3001,
+	'Comfort Colours 1717': Templates.Comfort_Colours_1717
 }
 
 
