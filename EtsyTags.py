@@ -1,9 +1,13 @@
+import os
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import time
 import random
-
+with open('New_Variables.txt') as file:
+	for line in file:
+		key, value = line.strip().split('=')
+		os.environ[key] = value
 DELAY = random.uniform(0.1, 0.3)
 LISTING_URL = 'https://www.etsy.com/your/shops/PrintGeekStaging/tools/listings'
 
@@ -13,12 +17,12 @@ def login_etsy() -> webdriver.Chrome:
 	driver: webdriver.Chrome = webdriver.Chrome()
 	driver.get(LISTING_URL)
 	email_input = driver.find_element(By.ID, 'join_neu_email_field')
-	email: str = 'daveanandmannie@gmail.com'
+	email: str = os.environ.get('EMAIL')
 	for char in email:
 		email_input.send_keys(char)
 		time.sleep(DELAY)
 	pass_input = driver.find_element(By.ID, 'join_neu_password_field')
-	password: str = 'Password01!'
+	password: str = os.environ.get('PASSWORD')
 	for char in password:
 		pass_input.send_keys(char)
 		time.sleep(DELAY)
