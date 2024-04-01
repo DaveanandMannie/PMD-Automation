@@ -59,18 +59,22 @@ def get_first_product_id(shop_id: int) -> int:
 	product_list_response = requests.get(ENDPOINT_URL + f'shops/{shop_id}/products.json', headers=HEADERS)
 	product_list_response.raise_for_status()
 	product_list_data = product_list_response.json()
-	product_id = product_list_data['data'][0]['id']
+	product_id = product_list_data['data'][1]['id']
 	return product_id
 
 
-def get_product_variants(product_id: int, shop_id: int) -> list:
+def get_product_info(product_id: int, shop_id: int) -> dict:
 	""" Returns a list of all variants enabled on an existing product """
 	product_response = requests.get(ENDPOINT_URL + f'shops/{shop_id}/products/{product_id}.json', headers=HEADERS)
 	product_data = product_response.json()
 	all_available_variants = product_data['variants']
 	enabled_variants = [variant['id'] for variant in all_available_variants if variant.get('is_enabled')]
-	return enabled_variants
-
+	product_info = {
+		'name': product_data['title'],
+		'blueprint': product_data['blueprint_id'],
+		'variants': enabled_variants
+	}
+	return product_info
 
 def push_to_api(
 		image_url: str,
