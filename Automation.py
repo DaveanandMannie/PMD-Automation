@@ -6,12 +6,12 @@ from typing import Union
 import Templates
 
 # TODO revoke and reinstate API key while utilizing windows environ
-with open('Variables.txt') as f:
+with open('New_Variables.txt') as f:
 	for line in f:
 		key, value = line.strip().split('=')
 		os.environ[key] = value
 # Global variables
-PRINTIFY_API_KEY = os.environ.get('API_KEY')
+PRINTIFY_API_KEY = os.environ.get('PRINTIFY_API_KEY')
 PRINT_GEEK_ID = 27
 ENDPOINT_URL = 'https://api.printify.com/v1/'
 HEADERS = {
