@@ -127,7 +127,7 @@ final_automation_button.grid(row=3, column=0, columnspan=2)
 # Etsy tagger
 tagger_label: tkinter.Label = tkinter.Label(
 	text=(
-		'* Please wait until all items are published on Printify before running the tagger\n'
+		'* Please wait until all items are published on Etsy before running the tagger\n'
 		'* CSV file must be the same used for automation\n'
 		"* Have Etsy's 2FA ready"
 	),
