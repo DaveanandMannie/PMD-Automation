@@ -172,6 +172,7 @@ def create_product_from_csv(template: str, publish: bool, file_name: str) -> Non
 	with open(file_name, 'r') as file:
 		reader = csv.DictReader(file)
 		for row in reader:
+			# TODO change keys to variables and add that to the GUI like MT
 			# change based on the MyDesign template
 			# noinspection PyTypeChecker
 			image_name: str = row['Print File_slot_file_name']
