@@ -59,10 +59,14 @@ def etsy_tagging() -> None:
 	close_driver(driver)
 	return
 
+def test():
+	print(f'{root.winfo_width()}x{root.winfo_height()}')
+
 
 # Main window logic
 root: tkinter.Tk = tkinter.Tk()
 root.title('PMD Automation')
+root.minsize(555, 265)
 root.configure(padx=10, pady=10)
 root.grid_rowconfigure(0, pad=10)
 root.grid_rowconfigure(1, pad=10)
