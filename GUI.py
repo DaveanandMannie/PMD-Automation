@@ -11,6 +11,8 @@ def select_csv() -> str:
 	file_name = os.path.basename(file_path)
 	selected_file_label.config(text=f'Chosen file: {file_name}')
 	selected_file.set(file_path)
+	if selected_file.get() and selected_template.get():
+		final_automation_button.config(bg='#90EE90')
 	return file_name
 
 
@@ -29,6 +31,8 @@ def template_select(value: str) -> str:
 	if value in templates:
 		selected_template.set(value)
 		dropdown_label.config(text=value)
+	if selected_file.get() and selected_template.get():
+		final_automation_button.config(bg='#90EE90')
 	return selected_template.get()
 
 
@@ -104,7 +108,7 @@ final_automation_button: tkinter.Button = tkinter.Button(
 	text='Start Automation',
 	command=printify_automation,
 	width=75,
-	bg='#90EE90'
+	bg='red'
 )
 final_automation_button.grid(row=3, column=0, columnspan=2)
 
