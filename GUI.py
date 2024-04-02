@@ -2,7 +2,7 @@ import tkinter
 from tkinter import filedialog
 import os
 from Automation import create_product_from_csv, TEMPLATES_DICT
-
+import EtsyTags
 
 def select_csv() -> str:
 	file_path = filedialog.askopenfilename(title="select directory")
@@ -78,6 +78,6 @@ publish_label: tkinter.Label = tkinter.Label(root, bg='white', width=20, text='S
 publish_label.pack()
 
 # final call for automations
-final_button: tkinter.Button = tkinter.Button(root, text='Start', command=printify_automation)
-final_button.pack()
+final_automation_button: tkinter.Button = tkinter.Button(root, text='Start', command=printify_automation)
+final_automation_button.pack()
 root.mainloop()
