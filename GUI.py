@@ -4,13 +4,13 @@ import os
 from Automation import create_product_from_csv, TEMPLATES_DICT
 import EtsyTags
 
+
 def select_csv() -> str:
 	file_path = filedialog.askopenfilename(title="select directory")
-	if file_path:
-		file_name = os.path.basename(file_path)
-		selected_file_label.config(text=f'Chosen file: {file_name}')
-		selected_file_name.set(file_name)
-		return file_name
+	file_name = os.path.basename(file_path)
+	selected_file_label.config(text=f'Chosen file: {file_name}')
+	selected_file_name.set(file_path)
+	return file_name
 
 
 def checkbox_bool() -> bool:
