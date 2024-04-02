@@ -59,9 +59,6 @@ def etsy_tagging() -> None:
 	close_driver(driver)
 	return
 
-def test():
-	print(f'{root.winfo_width()}x{root.winfo_height()}')
-
 
 # Main window logic
 root: tkinter.Tk = tkinter.Tk()
