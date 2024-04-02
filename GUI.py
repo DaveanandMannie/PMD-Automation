@@ -62,7 +62,15 @@ def etsy_tagging() -> None:
 
 # Main window logic
 root: tkinter.Tk = tkinter.Tk()
-# root.geometry("1280x720")
+root.title('PMD Automation')
+root.configure(padx=10, pady=10)
+root.grid_rowconfigure(0, pad=10)
+root.grid_rowconfigure(1, pad=10)
+root.grid_rowconfigure(2, pad=10)
+root.grid_rowconfigure(3, pad=10)
+root.grid_rowconfigure(4, pad=10)
+root.grid_rowconfigure(5, pad=10)
+root.grid_rowconfigure(6, pad=10)
 # button to select files
 select_directory_button: tkinter.Button = tkinter.Button(root, text='Select file', command=select_csv)
 select_directory_button.grid(row=0, column=0)
