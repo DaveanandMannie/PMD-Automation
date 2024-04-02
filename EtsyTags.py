@@ -53,4 +53,5 @@ def update_tags(driver: webdriver.Chrome, title: str, tags: list[str]) -> None:
 
 def close_driver(driver: webdriver.Chrome) -> None:
 	driver.quit()
+	print('Tagging Finished')
 	return
