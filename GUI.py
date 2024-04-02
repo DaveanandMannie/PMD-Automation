@@ -28,6 +28,7 @@ def checkbox_bool() -> bool:
 def template_select(value: str) -> str:
 	if value in templates:
 		selected_template.set(value)
+		dropdown_label.config(text=value)
 	return selected_template.get()
 
 
@@ -57,14 +58,14 @@ def etsy_tagging() -> None:
 
 # Main window logic
 root: tkinter.Tk = tkinter.Tk()
-root.geometry("1280x720")
+# root.geometry("1280x720")
 # button to select files
 select_directory_button: tkinter.Button = tkinter.Button(root, text='Select file', command=select_csv)
-select_directory_button.pack()
+select_directory_button.grid(row=0, column=0)
 
 # MyDesign export csv
 selected_file_label: tkinter.Label = tkinter.Label(root, text='Chosen file: Null', bg='white', width=20)
-selected_file_label.pack()
+selected_file_label.grid(row=0, column=1)
 selected_file: tkinter.StringVar = tkinter.StringVar()
 
 # Etsy publish check box
@@ -80,26 +81,50 @@ checkbox: tkinter.Checkbutton = tkinter.Checkbutton(
 	width=20,
 	command=checkbox_bool
 )
-checkbox.pack()
+checkbox.grid(row=1, column=0)
 
 # template drop down
 templates: list[str] = [key for key in TEMPLATES_DICT]
 selected_template: tkinter.StringVar = tkinter.StringVar(root)
-selected_template.set(templates[0])
+selected_template.set('Click to select Template')
 # noinspection PyTypeChecker
 dropdown = tkinter.OptionMenu(root, selected_template, *templates, command=template_select)
-dropdown.pack()
+dropdown.grid(row=2, column=1)
+
+dropdown_label: tkinter.Label = tkinter.Label(text='', width=20, bg='white')
+dropdown_label.grid(row=2, column=0)
 
 # Publish feedback
 publish_label: tkinter.Label = tkinter.Label(root, bg='white', width=20, text='Staying in Printify')
-publish_label.pack()
+publish_label.grid(row=1, column=1)
 
 # final call for automations
-final_automation_button: tkinter.Button = tkinter.Button(root, text='Start', command=printify_automation)
-final_automation_button.pack()
+final_automation_button: tkinter.Button = tkinter.Button(
+	root,
+	text='Start Automation',
+	command=printify_automation,
+	width=75,
+	bg='#90EE90'
+)
+final_automation_button.grid(row=3, column=0, columnspan=2)
 
 # Etsy tagger
-etsy_tagger = tkinter.Button(root, text='tagger', command=etsy_tagging)
-etsy_tagger.pack()
+tagger_label: tkinter.Label = tkinter.Label(
+	text=(
+		'* Please wait until all items are published on Printify before running the tagger\n'
+		'* CSV file must be the same used for automation\n'
+		"* Have Etsy's 2FA ready"
+	),
+	bg='white',
+)
+tagger_label.grid(row=4, column=0, columnspan=2)
+etsy_tagger: tkinter.Button = tkinter.Button(
+	root,
+	text='Etsy Tagger',
+	command=etsy_tagging,
+	width=75,
+	bg='pink'
+)
+etsy_tagger.grid(row=5, column=0, columnspan=2)
 
 root.mainloop()
