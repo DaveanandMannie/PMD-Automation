@@ -1,15 +1,16 @@
+import csv
 import tkinter
 from tkinter import filedialog
 import os
 from Automation import create_product_from_csv, TEMPLATES_DICT
-import EtsyTags
+from EtsyTags import login_etsy, update_tags, close_driver
 
 
 def select_csv() -> str:
 	file_path = filedialog.askopenfilename(title="select directory")
 	file_name = os.path.basename(file_path)
 	selected_file_label.config(text=f'Chosen file: {file_name}')
-	selected_file_name.set(file_path)
+	selected_file.set(file_path)
 	return file_name
 
 
@@ -34,8 +35,24 @@ def printify_automation() -> None:
 	create_product_from_csv(
 		template=selected_template.get(),
 		publish=publish_bool.get(),
-		file_name=selected_file_name.get()
+		file_name=selected_file.get()
 	)
+	return
+
+
+def etsy_tagging() -> None:
+	csv_file = selected_file.get()
+	driver = login_etsy()
+	with open(csv_file, 'r') as file:
+		reader = csv.DictReader(file)
+		for row in reader:
+			# noinspection PyTypeChecker
+			title: str = row['Listing.Title']
+			# noinspection PyTypeChecker
+			tag_list: list[str] = [tag for tag in row['Tags.All Tags'].strip().split(',')]
+			update_tags(driver=driver, title=title, tags=tag_list)
+	close_driver(driver)
+	return
 
 
 # Main window logic
@@ -48,7 +65,7 @@ select_directory_button.pack()
 # MyDesign export csv
 selected_file_label: tkinter.Label = tkinter.Label(root, text='Chosen file: Null', bg='white', width=20)
 selected_file_label.pack()
-selected_file_name: tkinter.StringVar = tkinter.StringVar()
+selected_file: tkinter.StringVar = tkinter.StringVar()
 
 # Etsy publish check box
 publish_int: tkinter.IntVar = tkinter.IntVar()
@@ -80,4 +97,9 @@ publish_label.pack()
 # final call for automations
 final_automation_button: tkinter.Button = tkinter.Button(root, text='Start', command=printify_automation)
 final_automation_button.pack()
+
+# Etsy tagger
+etsy_tagger = tkinter.Button(root, text='tagger', command=etsy_tagging)
+etsy_tagger.pack()
+
 root.mainloop()
