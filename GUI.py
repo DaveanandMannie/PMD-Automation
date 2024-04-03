@@ -6,14 +6,29 @@ from Automation import create_product_from_csv, TEMPLATES_DICT
 from EtsyTags import login_etsy, update_tags, close_driver
 
 
+def get_csv_headers(file_path: str) -> list:
+	with open(file_path, 'r') as file:
+		reader: csv.DictReader = csv.DictReader(file)
+		header_names: list = reader.fieldnames
+		return header_names
+
+
 def select_csv() -> str:
 	file_path = filedialog.askopenfilename(title="select directory")
 	file_name = os.path.basename(file_path)
 	selected_file_label.config(text=f'Chosen file: {file_name}')
 	selected_file.set(file_path)
+	get_csv_headers(file_path)
 	if selected_file.get() and selected_template.get():
 		final_automation_button.config(bg='#90EE90')
 	return file_name
+
+
+# TODO remove print debug
+def var_set(var_name: tkinter.StringVar, value) -> None:
+	var_name.set(value)
+	print(var_name.get())
+	return
 
 
 def checkbox_bool() -> bool:
@@ -49,11 +64,9 @@ def etsy_tagging() -> None:
 	csv_file = selected_file.get()
 	driver = login_etsy()
 	with open(csv_file, 'r') as file:
-		reader = csv.DictReader(file)
+		reader: csv.DictReader = csv.DictReader(file)
 		for row in reader:
-			# noinspection PyTypeChecker
 			title: str = row['Listing.Title']
-			# noinspection PyTypeChecker
 			tag_list: list[str] = [tag for tag in row['Tags.All Tags'].strip().split(',')]
 			update_tags(driver=driver, title=title, tags=tag_list)
 	close_driver(driver)
@@ -108,7 +121,7 @@ templates: list[str] = [key for key in TEMPLATES_DICT]
 selected_template: tkinter.StringVar = tkinter.StringVar(root)
 selected_template.set('Click to select Template')
 # noinspection PyTypeChecker
-dropdown = tkinter.OptionMenu(root, selected_template, *templates, command=template_select)
+dropdown: tkinter.OptionMenu = tkinter.OptionMenu(root, selected_template, *templates, command=template_select)
 dropdown.grid(row=2, column=0, sticky='nsew')
 # drop down label
 dropdown_label: tkinter.Label = tkinter.Label(text='Template: Null', width=20, bg='white')
@@ -117,6 +130,15 @@ dropdown_label.grid(row=2, column=1, sticky='nsew')
 # Publish feedback
 publish_label: tkinter.Label = tkinter.Label(root, bg='white', width=20, text='Staying in Printify')
 publish_label.grid(row=1, column=1, sticky='nsew')
+
+# header routing
+selected_image_name: tkinter.StringVar = tkinter.StringVar(root)
+selected_url: tkinter.StringVar = tkinter.StringVar(root)
+selected_title: tkinter.StringVar = tkinter.StringVar(root)
+selected_description: tkinter.StringVar = tkinter.StringVar(root)
+selected_tags: tkinter.StringVar = tkinter.StringVar(root)
+dropdown: tkinter.OptionMenu = tkinter.OptionMenu(root, selected_template, *templates, command=template_select)
+
 
 # final call for automations
 final_automation_button: tkinter.Button = tkinter.Button(
