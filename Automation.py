@@ -87,7 +87,9 @@ def push_to_api(
 		product_variant_list: list,
 		price: int,
 		shop_id: int,
-		blueprint_id: int) -> str:
+		blueprint_id: int
+) -> str:
+
 	""" Takes all required Printify fields and sends a POST request through the API """
 	# pushes the image to the api -> consider making a separate function
 	image_data = {'file_name': image_name + '.png', 'url': image_url}
