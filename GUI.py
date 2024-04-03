@@ -110,7 +110,7 @@ selected_template.set('Click to select Template')
 # noinspection PyTypeChecker
 dropdown = tkinter.OptionMenu(root, selected_template, *templates, command=template_select)
 dropdown.grid(row=2, column=0, sticky='nsew')
-
+# drop down label
 dropdown_label: tkinter.Label = tkinter.Label(text='Template: Null', width=20, bg='white')
 dropdown_label.grid(row=2, column=1, sticky='nsew')
 
@@ -138,6 +138,8 @@ tagger_label: tkinter.Label = tkinter.Label(
 	bg='white',
 )
 tagger_label.grid(row=4, column=0, columnspan=2, sticky='nsew')
+
+# Etsy tagger button
 etsy_tagger: tkinter.Button = tkinter.Button(
 	root,
 	text='Etsy Tagger',
