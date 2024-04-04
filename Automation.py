@@ -18,6 +18,7 @@ HEADERS = {
 	'Content-Type': 'application/json;charset=utf-8'
 }
 ETSY_SHOP_ID = 15047741
+# TODO maybe move this to the templates file
 TEMPLATES_DICT: dict[str, type:Templates.Template] = {
 	'Gildan 5000': Templates.Popular_Gildan_5000,
 	'Bella 3001': Templates.Popular_Bella_3001,
