@@ -161,7 +161,16 @@ def publish_product(product_id: str, publish_json: dict[str: bool]) -> requests.
 	return publish_response
 
 
-def create_product_from_csv(template: str, publish: bool, file_name: str) -> None:
+def create_product_from_csv(
+		template: str,
+		publish: bool,
+		file_name: str,
+		image_name_header: str,
+		image_url_header: str,
+		title_header: str,
+		description_header: str,
+		tags_header: str
+) -> None:
 	""" Calls the production creation function with data from templates/profiles and MyDesign export """
 	chosen_template: Union[Templates.Template, None] = None
 	if template in TEMPLATES_DICT:
@@ -176,15 +185,15 @@ def create_product_from_csv(template: str, publish: bool, file_name: str) -> Non
 			# TODO change keys to variables and add that to the GUI like MT
 			# change based on the MyDesign template
 			# noinspection PyTypeChecker
-			image_name: str = row['Print File_slot_file_name']
+			image_name: str = row[image_name_header]
 			# noinspection PyTypeChecker
-			image_url: str = row['Print File_slot_image_url']
+			image_url: str = row[image_url_header]
 			# noinspection PyTypeChecker
-			title: str = row['Listing.Title']
+			title: str = row[title_header]
 			# noinspection PyTypeChecker
-			description: str = row['Listing.Description']
+			description: str = row[description_header]
 			# noinspection PyTypeChecker
-			tags: list[str] = [tag for tag in row['Tags.All Tags'].strip().split(',')]
+			tags: list[str] = [tag for tag in row[tags_header].strip().split(',')]
 			new_product_id = push_to_api(
 				image_url=image_url,
 				image_name=image_name,

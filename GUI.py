@@ -118,7 +118,12 @@ def printify_automation() -> None:
 	create_product_from_csv(
 		template=selected_template.get(),
 		publish=publish_bool.get(),
-		file_name=selected_file.get()
+		file_name=selected_file.get(),
+		image_name_header=selected_image_name.get(),
+		image_url_header=selected_url.get(),
+		title_header=selected_title.get(),
+		description_header=selected_description.get(),
+		tags_header=selected_tags.get()
 	)
 	return
 
