@@ -159,16 +159,16 @@ root.minsize(555, 265)
 root.configure(padx=10, pady=10)
 # TODO: update for new widgets
 for i in range(12):
-	root.grid_rowconfigure(i, weight=1, pad=10)
+	root.grid_rowconfigure(i, weight=1, pad=15)
 for j in range(2):
-	root.grid_columnconfigure(j, weight=1)
+	root.grid_columnconfigure(j, weight=1, pad=15)
 
 # button to select files
 select_directory_button: tkinter.Button = tkinter.Button(root, text='Select file', command=select_csv)
 select_directory_button.grid(row=0, column=0, sticky='nsew')
 
 # MyDesign export csv
-selected_file_label: tkinter.Label = tkinter.Label(root, text='Chosen file: Null', bg='white', width=20)
+selected_file_label: tkinter.Label = tkinter.Label(root, text='Chosen file: Null', bg='white',)
 selected_file_label.grid(row=0, column=1, sticky='nsew')
 selected_file: tkinter.StringVar = tkinter.StringVar()
 
@@ -182,7 +182,6 @@ checkbox: tkinter.Checkbutton = tkinter.Checkbutton(
 	variable=publish_int,
 	onvalue=1,
 	offvalue=0,
-	width=20,
 	command=checkbox_bool
 )
 checkbox.grid(row=9, column=0, sticky='nsew')
@@ -195,11 +194,11 @@ selected_template.set('Click to select Template')
 dropdown: tkinter.OptionMenu = tkinter.OptionMenu(root, selected_template, *templates, command=template_select)
 dropdown.grid(row=2, column=0, sticky='nsew')
 # drop down label
-dropdown_label: tkinter.Label = tkinter.Label(text='Template: Null', width=20, bg='white')
+dropdown_label: tkinter.Label = tkinter.Label(text='Template: Null', bg='white')
 dropdown_label.grid(row=2, column=1, sticky='nsew')
 
 # Publish feedback
-publish_label: tkinter.Label = tkinter.Label(root, bg='white', width=20, text='Staying in Printify')
+publish_label: tkinter.Label = tkinter.Label(root, bg='white', text='Staying in Printify')
 publish_label.grid(row=9, column=1, sticky='nsew')
 
 # header routing vars and labels
@@ -218,11 +217,11 @@ selected_description.set('Click to select Description')
 selected_tags: tkinter.StringVar = tkinter.StringVar(root)
 selected_tags.set('Click to select tags')
 
-image_label: tkinter.Label = tkinter.Label(text='Image column: Null', width=20, bg='white')
-url_label: tkinter.Label = tkinter.Label(text='URL column: Null', width=20, bg='white')
-title_label: tkinter.Label = tkinter.Label(text='Title column: Null', width=20, bg='white')
-description_label: tkinter.Label = tkinter.Label(text='Description column: Null', width=20, bg='white')
-tags_label: tkinter.Label = tkinter.Label(text='Tags column: Null', width=20, bg='white')
+image_label: tkinter.Label = tkinter.Label(text='Image column: Null', bg='white')
+url_label: tkinter.Label = tkinter.Label(text='URL column: Null', bg='white')
+title_label: tkinter.Label = tkinter.Label(text='Title column: Null', bg='white')
+description_label: tkinter.Label = tkinter.Label(text='Description column: Null', bg='white')
+tags_label: tkinter.Label = tkinter.Label(text='Tags column: Null', bg='white')
 
 # final call for automations
 final_automation_button: tkinter.Button = tkinter.Button(
