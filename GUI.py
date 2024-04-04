@@ -24,17 +24,17 @@ def create_dropdowns() -> None:
 	tags_dropdown: tkinter.OptionMenu = tkinter.OptionMenu(
 		root, selected_tags, *header_names, command=tag_select)
 
-	image_dropdown.grid(row=5, sticky='nsew')
-	url_dropdown.grid(row=6, sticky='nsew')
-	title_dropdown.grid(row=7, sticky='nsew')
-	description_dropdown.grid(row=8, sticky='nsew')
-	tags_dropdown.grid(row=9, sticky='nsew')
+	image_dropdown.grid(row=4, sticky='nsew')
+	url_dropdown.grid(row=5, sticky='nsew')
+	title_dropdown.grid(row=6, sticky='nsew')
+	description_dropdown.grid(row=7, sticky='nsew')
+	tags_dropdown.grid(row=8, sticky='nsew')
 
-	image_label.grid(row=5, column=1, sticky='nsew')
-	url_label.grid(row=6, column=1, sticky='nsew')
-	title_label.grid(row=7, column=1, sticky='nsew')
-	description_label.grid(row=8, column=1, sticky='nsew')
-	tags_label.grid(row=9, column=1, sticky='nsew')
+	image_label.grid(row=4, column=1, sticky='nsew')
+	url_label.grid(row=5, column=1, sticky='nsew')
+	title_label.grid(row=6, column=1, sticky='nsew')
+	description_label.grid(row=7, column=1, sticky='nsew')
+	tags_label.grid(row=8, column=1, sticky='nsew')
 	return
 
 
@@ -58,7 +58,7 @@ def automations_check() -> None:
 def select_csv() -> str:
 	file_path = filedialog.askopenfilename(title="select directory")
 	file_name = os.path.basename(file_path)
-	selected_file_label.config(text=f'Chosen file: {file_name}')
+	selected_file_label.config(text=f'Chosen file: {file_name}', bg='#90EE90')
 	selected_file.set(file_path)
 	get_csv_headers(file_path)
 	create_dropdowns()
@@ -80,7 +80,7 @@ def checkbox_bool() -> bool:
 def template_select(value: str) -> str:
 	if value in templates:
 		selected_template.set(value)
-		dropdown_label.config(text=f'Template: {value}')
+		dropdown_label.config(text=f'Template: {value}', bg='#90EE90')
 	automations_check()
 	return selected_template.get()
 
@@ -88,7 +88,7 @@ def template_select(value: str) -> str:
 def image_name_select(value) -> None:
 	if value:
 		header_bools.append(True)
-		image_label.config(text=f'Image column: {value}')
+		image_label.config(text=f'Image column: {value}', bg='#90EE90')
 	automations_check()
 	return
 
@@ -96,7 +96,7 @@ def image_name_select(value) -> None:
 def url_select(value) -> None:
 	if value:
 		header_bools.append(True)
-		url_label.config(text=f'URL column: {value}')
+		url_label.config(text=f'URL column: {value}', bg='#90EE90')
 	automations_check()
 	return
 
@@ -104,7 +104,7 @@ def url_select(value) -> None:
 def title_select(value) -> None:
 	if value:
 		header_bools.append(True)
-		title_label.config(text=f'Title column: {value}')
+		title_label.config(text=f'Title column: {value}', bg='#90EE90')
 	automations_check()
 	return
 
@@ -112,7 +112,7 @@ def title_select(value) -> None:
 def description_select(value) -> None:
 	if value:
 		header_bools.append(True)
-		description_label.config(text=f'Description column: {value}')
+		description_label.config(text=f'Description column: {value}', bg='#90EE90')
 	automations_check()
 	return
 
@@ -120,7 +120,7 @@ def description_select(value) -> None:
 def tag_select(value) -> None:
 	if value:
 		header_bools.append(True)
-		tags_label.config(text=f'Tags column: {value}')
+		tags_label.config(text=f'Tags column: {value}', bg='#90EE90')
 	automations_check()
 	return
 
@@ -185,7 +185,7 @@ checkbox: tkinter.Checkbutton = tkinter.Checkbutton(
 	width=20,
 	command=checkbox_bool
 )
-checkbox.grid(row=1, column=0, sticky='nsew')
+checkbox.grid(row=9, column=0, sticky='nsew')
 
 # template drop down
 templates: list[str] = [key for key in TEMPLATES_DICT]
@@ -200,25 +200,29 @@ dropdown_label.grid(row=2, column=1, sticky='nsew')
 
 # Publish feedback
 publish_label: tkinter.Label = tkinter.Label(root, bg='white', width=20, text='Staying in Printify')
-publish_label.grid(row=1, column=1, sticky='nsew')
+publish_label.grid(row=9, column=1, sticky='nsew')
 
 # header routing vars and labels
 selected_image_name: tkinter.StringVar = tkinter.StringVar(root)
 selected_image_name.set('Click to select image name')
+
 selected_url: tkinter.StringVar = tkinter.StringVar(root)
 selected_url.set('Click to select URL')
+
 selected_title: tkinter.StringVar = tkinter.StringVar(root)
 selected_title.set('Click to select title')
+
 selected_description: tkinter.StringVar = tkinter.StringVar(root)
 selected_description.set('Click to select Description')
+
 selected_tags: tkinter.StringVar = tkinter.StringVar(root)
 selected_tags.set('Click to select tags')
 
-image_label: tkinter.Label = tkinter.Label(text='Select image column', width=20, bg='white')
-url_label: tkinter.Label = tkinter.Label(text='Select URL column', width=20, bg='white')
-title_label: tkinter.Label = tkinter.Label(text='Select title column', width=20, bg='white')
-description_label: tkinter.Label = tkinter.Label(text='Select description column', width=20, bg='white')
-tags_label: tkinter.Label = tkinter.Label(text='Select tags column', width=20, bg='white')
+image_label: tkinter.Label = tkinter.Label(text='Image column: Null', width=20, bg='white')
+url_label: tkinter.Label = tkinter.Label(text='URL column: Null', width=20, bg='white')
+title_label: tkinter.Label = tkinter.Label(text='Title column: Null', width=20, bg='white')
+description_label: tkinter.Label = tkinter.Label(text='Description column: Null', width=20, bg='white')
+tags_label: tkinter.Label = tkinter.Label(text='Tags column: Null', width=20, bg='white')
 
 # final call for automations
 final_automation_button: tkinter.Button = tkinter.Button(
