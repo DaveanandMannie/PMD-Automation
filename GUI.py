@@ -7,7 +7,6 @@ from EtsyTags import login_etsy, update_tags, close_driver
 
 header_bools: list[bool] = []
 header_names: list[str] = []
-# TODO add check for header_bools before changing the automation button to green
 
 
 def create_dropdowns() -> None:
@@ -205,10 +204,15 @@ publish_label.grid(row=1, column=1, sticky='nsew')
 
 # header routing vars and labels
 selected_image_name: tkinter.StringVar = tkinter.StringVar(root)
+selected_image_name.set('Click to select image name')
 selected_url: tkinter.StringVar = tkinter.StringVar(root)
+selected_url.set('Click to select URL')
 selected_title: tkinter.StringVar = tkinter.StringVar(root)
+selected_title.set('Click to select title')
 selected_description: tkinter.StringVar = tkinter.StringVar(root)
+selected_description.set('Click to select Description')
 selected_tags: tkinter.StringVar = tkinter.StringVar(root)
+selected_tags.set('Click to select tags')
 
 image_label: tkinter.Label = tkinter.Label(text='Select image column', width=20, bg='white')
 url_label: tkinter.Label = tkinter.Label(text='Select URL column', width=20, bg='white')
