@@ -39,13 +39,11 @@ def create_dropdowns() -> None:
 	return
 
 
-def get_csv_headers(file_path: str) -> list:
+def get_csv_headers(file_path: str) -> list[str]:
 	global header_names
 	with open(file_path, 'r') as file:
 		reader: csv.DictReader = csv.DictReader(file)
-		# noinspection PyTypeChecker
-		header_names = reader.fieldnames
-		# noinspection PyTypeChecker
+		header_names = reader.fieldnames or []
 		return header_names
 
 
