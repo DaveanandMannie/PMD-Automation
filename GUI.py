@@ -7,6 +7,7 @@ from EtsyTags import login_etsy, update_tags, close_driver
 
 header_bools: list[bool] = []
 header_names: list[str] = []
+# TODO add check for header_bools before changing the automation button to green
 
 
 def create_dropdowns() -> None:
