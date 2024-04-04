@@ -5,11 +5,46 @@ import os
 from Automation import create_product_from_csv, TEMPLATES_DICT
 from EtsyTags import login_etsy, update_tags, close_driver
 
+header_bools: list[bool] = []
+header_names: list[str] = []
+
+
+def create_dropdowns() -> None:
+	image_dropdown: tkinter.OptionMenu = tkinter.OptionMenu(
+		root, selected_image_name, *header_names, command=image_name_select)
+
+	url_dropdown: tkinter.OptionMenu = tkinter.OptionMenu(root, selected_url, *header_names, command=url_select)
+
+	title_dropdown: tkinter.OptionMenu = tkinter.OptionMenu(
+		root, selected_title, *header_names, command=title_select)
+
+	description_dropdown: tkinter.OptionMenu = tkinter.OptionMenu(
+		root, selected_description, *header_names, command=description_select)
+
+	tags_dropdown: tkinter.OptionMenu = tkinter.OptionMenu(
+		root, selected_tags, *header_names, command=tag_select)
+
+	image_dropdown.grid(row=5, sticky='nsew')
+	url_dropdown.grid(row=6, sticky='nsew')
+	title_dropdown.grid(row=7, sticky='nsew')
+	description_dropdown.grid(row=8, sticky='nsew')
+	tags_dropdown.grid(row=9, sticky='nsew')
+
+	image_label.grid(row=5, column=1, sticky='nsew')
+	url_label.grid(row=6, column=1, sticky='nsew')
+	title_label.grid(row=7, column=1, sticky='nsew')
+	description_label.grid(row=8, column=1, sticky='nsew')
+	tags_label.grid(row=9, column=1, sticky='nsew')
+	return
+
 
 def get_csv_headers(file_path: str) -> list:
+	global header_names
 	with open(file_path, 'r') as file:
 		reader: csv.DictReader = csv.DictReader(file)
-		header_names: list = reader.fieldnames
+		# noinspection PyTypeChecker
+		header_names = reader.fieldnames
+		# noinspection PyTypeChecker
 		return header_names
 
 
@@ -19,16 +54,10 @@ def select_csv() -> str:
 	selected_file_label.config(text=f'Chosen file: {file_name}')
 	selected_file.set(file_path)
 	get_csv_headers(file_path)
-	if selected_file.get() and selected_template.get():
+	create_dropdowns()
+	if selected_file.get() and selected_template.get() != 'Click to select Template':
 		final_automation_button.config(bg='#90EE90')
 	return file_name
-
-
-# TODO remove print debug
-def var_set(var_name: tkinter.StringVar, value) -> None:
-	var_name.set(value)
-	print(var_name.get())
-	return
 
 
 def checkbox_bool() -> bool:
@@ -49,6 +78,41 @@ def template_select(value: str) -> str:
 	if selected_file.get() and selected_template.get():
 		final_automation_button.config(bg='#90EE90')
 	return selected_template.get()
+
+
+def image_name_select(value) -> None:
+	if value:
+		header_bools.append(True)
+		image_label.config(text=f'Image column: {value}')
+	return
+
+
+def url_select(value) -> None:
+	if value:
+		header_bools.append(True)
+		url_label.config(text=f'URL column: {value}')
+	return
+
+
+def title_select(value) -> None:
+	if value:
+		header_bools.append(True)
+		title_label.config(text=f'Title column: {value}')
+	return
+
+
+def description_select(value) -> None:
+	if value:
+		header_bools.append(True)
+		description_label.config(text=f'Description column: {value}')
+	return
+
+
+def tag_select(value) -> None:
+	if value:
+		header_bools.append(True)
+		tags_label.config(text=f'Tags column: {value}')
+	return
 
 
 def printify_automation() -> None:
@@ -78,17 +142,9 @@ root: tkinter.Tk = tkinter.Tk()
 root.title('PMD Automation')
 root.minsize(555, 265)
 root.configure(padx=10, pady=10)
-root.grid_rowconfigure(0, pad=10)
-root.grid_rowconfigure(1, pad=10)
-root.grid_rowconfigure(2, pad=10)
-root.grid_rowconfigure(3, pad=10)
-root.grid_rowconfigure(4, pad=10)
-root.grid_rowconfigure(5, pad=10)
-root.grid_rowconfigure(6, pad=10)
-
 # TODO: update for new widgets
-for i in range(7):
-	root.grid_rowconfigure(i, weight=1)
+for i in range(12):
+	root.grid_rowconfigure(i, weight=1, pad=10)
 for j in range(2):
 	root.grid_columnconfigure(j, weight=1)
 
@@ -131,14 +187,18 @@ dropdown_label.grid(row=2, column=1, sticky='nsew')
 publish_label: tkinter.Label = tkinter.Label(root, bg='white', width=20, text='Staying in Printify')
 publish_label.grid(row=1, column=1, sticky='nsew')
 
-# header routing
+# header routing vars and labels
 selected_image_name: tkinter.StringVar = tkinter.StringVar(root)
 selected_url: tkinter.StringVar = tkinter.StringVar(root)
 selected_title: tkinter.StringVar = tkinter.StringVar(root)
 selected_description: tkinter.StringVar = tkinter.StringVar(root)
 selected_tags: tkinter.StringVar = tkinter.StringVar(root)
-dropdown: tkinter.OptionMenu = tkinter.OptionMenu(root, selected_template, *templates, command=template_select)
 
+image_label: tkinter.Label = tkinter.Label(text='Select image column', width=20, bg='white')
+url_label: tkinter.Label = tkinter.Label(text='Select URL column', width=20, bg='white')
+title_label: tkinter.Label = tkinter.Label(text='Select title column', width=20, bg='white')
+description_label: tkinter.Label = tkinter.Label(text='Select description column', width=20, bg='white')
+tags_label: tkinter.Label = tkinter.Label(text='Select tags column', width=20, bg='white')
 
 # final call for automations
 final_automation_button: tkinter.Button = tkinter.Button(
@@ -148,7 +208,7 @@ final_automation_button: tkinter.Button = tkinter.Button(
 	width=75,
 	bg='red'
 )
-final_automation_button.grid(row=3, column=0, columnspan=2, sticky='nsew')
+final_automation_button.grid(row=10, column=0, columnspan=2, sticky='nsew')
 
 # Etsy tagger
 tagger_label: tkinter.Label = tkinter.Label(
@@ -159,7 +219,7 @@ tagger_label: tkinter.Label = tkinter.Label(
 	),
 	bg='white',
 )
-tagger_label.grid(row=4, column=0, columnspan=2, sticky='nsew')
+tagger_label.grid(row=11, column=0, columnspan=2, sticky='nsew')
 
 # Etsy tagger button
 etsy_tagger: tkinter.Button = tkinter.Button(
@@ -169,6 +229,6 @@ etsy_tagger: tkinter.Button = tkinter.Button(
 	width=75,
 	bg='pink'
 )
-etsy_tagger.grid(row=5, column=0, columnspan=2, sticky='nsew')
+etsy_tagger.grid(row=12, column=0, columnspan=2, sticky='nsew')
 
 root.mainloop()
