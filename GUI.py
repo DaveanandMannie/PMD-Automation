@@ -47,6 +47,15 @@ def get_csv_headers(file_path: str) -> list[str]:
 		return header_names
 
 
+def automations_check() -> None:
+	if False in header_bools:
+		final_automation_button.config(bg='red')
+	elif selected_template.get() == 'Click to select Template':
+		final_automation_button.config(bg='red')
+	elif header_bools.count(True) == 5:
+		final_automation_button.config(bg='#90EE90')
+
+
 def select_csv() -> str:
 	file_path = filedialog.askopenfilename(title="select directory")
 	file_name = os.path.basename(file_path)
@@ -54,8 +63,7 @@ def select_csv() -> str:
 	selected_file.set(file_path)
 	get_csv_headers(file_path)
 	create_dropdowns()
-	if selected_file.get() and selected_template.get() != 'Click to select Template':
-		final_automation_button.config(bg='#90EE90')
+	automations_check()
 	return file_name
 
 
@@ -74,8 +82,7 @@ def template_select(value: str) -> str:
 	if value in templates:
 		selected_template.set(value)
 		dropdown_label.config(text=f'Template: {value}')
-	if selected_file.get() and selected_template.get():
-		final_automation_button.config(bg='#90EE90')
+	automations_check()
 	return selected_template.get()
 
 
@@ -83,6 +90,7 @@ def image_name_select(value) -> None:
 	if value:
 		header_bools.append(True)
 		image_label.config(text=f'Image column: {value}')
+	automations_check()
 	return
 
 
@@ -90,6 +98,7 @@ def url_select(value) -> None:
 	if value:
 		header_bools.append(True)
 		url_label.config(text=f'URL column: {value}')
+	automations_check()
 	return
 
 
@@ -97,6 +106,7 @@ def title_select(value) -> None:
 	if value:
 		header_bools.append(True)
 		title_label.config(text=f'Title column: {value}')
+	automations_check()
 	return
 
 
@@ -104,6 +114,7 @@ def description_select(value) -> None:
 	if value:
 		header_bools.append(True)
 		description_label.config(text=f'Description column: {value}')
+	automations_check()
 	return
 
 
@@ -111,6 +122,7 @@ def tag_select(value) -> None:
 	if value:
 		header_bools.append(True)
 		tags_label.config(text=f'Tags column: {value}')
+	automations_check()
 	return
 
 
