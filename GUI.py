@@ -7,7 +7,7 @@ from EtsyTags import login_etsy, update_tags, close_driver
 import logging
 
 logging.basicConfig(
-	filename='app.log',
+	filename='log.log',
 	level=logging.WARNING,
 	format='%(asctime)s %(message)s',
 	datefmt='%m/%d/%Y %I:%M:%S %p'
