@@ -4,6 +4,14 @@ from tkinter import filedialog
 import os
 from Automation import create_product_from_csv, TEMPLATES_DICT
 from EtsyTags import login_etsy, update_tags, close_driver
+import logging
+
+logging.basicConfig(
+	filename='app.log',
+	level=logging.WARNING,
+	format='%(asctime)s %(message)s',
+	datefmt='%m/%d/%Y %I:%M:%S %p'
+)
 
 header_bools: dict[str:bool] = {
 	'image name': False,
@@ -158,30 +166,36 @@ def task_in_progress() -> None:
 
 def printify_automation() -> None:
 	task_in_progress()
-	create_product_from_csv(
-		template=selected_template.get(),
-		publish=publish_bool.get(),
-		file_name=selected_file.get(),
-		image_name_header=selected_image_name.get(),
-		image_url_header=selected_url.get(),
-		title_header=selected_title.get(),
-		description_header=selected_description.get(),
-		tags_header=selected_tags.get()
-	)
-	task_label.config(text='Task finished', bg='#90EE90')
+	try:
+		create_product_from_csv(
+			template=selected_template.get(),
+			publish=publish_bool.get(),
+			file_name=selected_file.get(),
+			image_name_header=selected_image_name.get(),
+			image_url_header=selected_url.get(),
+			title_header=selected_title.get(),
+			description_header=selected_description.get(),
+			tags_header=selected_tags.get()
+		)
+		task_label.config(text='Task finished', bg='#90EE90')
+	except Exception as error:
+		logging.error(f'Error in printify_automation: {error}', exc_info=True)
 	return
 
 
 def etsy_tagging() -> None:
 	csv_file = selected_file.get()
-	driver = login_etsy()
-	with open(csv_file, 'r') as file:
-		reader: csv.DictReader = csv.DictReader(file)
-		for row in reader:
-			title: str = row['Listing.Title']
-			tag_list: list[str] = [tag for tag in row['Tags.All Tags'].strip().split(',')]
-			update_tags(driver=driver, title=title, tags=tag_list)
-	close_driver(driver)
+	try:
+		driver = login_etsy()
+		with open(csv_file, 'r') as file:
+			reader: csv.DictReader = csv.DictReader(file)
+			for row in reader:
+				title: str = row['Listing.Title']
+				tag_list: list[str] = [tag for tag in row['Tags.All Tags'].strip().split(',')]
+				update_tags(driver=driver, title=title, tags=tag_list)
+		close_driver(driver)
+	except Exception as error:
+		logging.error(f'Error in etsy_tagging: {error}', exc_info=True)
 	return
 
 
