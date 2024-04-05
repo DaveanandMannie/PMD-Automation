@@ -35,6 +35,7 @@ def create_dropdowns() -> None:
 	title_label.grid(row=7, column=1, sticky='nsew')
 	description_label.grid(row=8, column=1, sticky='nsew')
 	tags_label.grid(row=9, column=1, sticky='nsew')
+	row_formatting()
 	return
 
 
@@ -160,16 +161,19 @@ def etsy_tagging() -> None:
 	return
 
 
+def row_formatting() -> None:
+	# TODO: update for new widgets
+	for i in range(14):
+		root.grid_rowconfigure(i, weight=1, pad=15)
+	for j in range(2):
+		root.grid_columnconfigure(j, weight=1, pad=15)
+
+
 # Main window logic
 root: tkinter.Tk = tkinter.Tk()
 root.title('PMD Automation')
 root.minsize(555, 265)
 root.configure(padx=10, pady=10)
-# TODO: update for new widgets
-for i in range(14):
-	root.grid_rowconfigure(i, weight=1, pad=15)
-for j in range(2):
-	root.grid_columnconfigure(j, weight=1, pad=15)
 
 # button to select files
 select_directory_button: tkinter.Button = tkinter.Button(root, text='Select file', command=select_csv)
@@ -265,5 +269,5 @@ etsy_tagger: tkinter.Button = tkinter.Button(
 	bg='pink'
 )
 etsy_tagger.grid(row=14, column=0, columnspan=2, sticky='nsew')
-
+row_formatting()
 root.mainloop()
