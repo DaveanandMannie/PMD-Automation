@@ -24,17 +24,17 @@ def create_dropdowns() -> None:
 	tags_dropdown: tkinter.OptionMenu = tkinter.OptionMenu(
 		root, selected_tags, *header_names, command=tag_select)
 
-	image_dropdown.grid(row=4, sticky='nsew')
-	url_dropdown.grid(row=5, sticky='nsew')
-	title_dropdown.grid(row=6, sticky='nsew')
-	description_dropdown.grid(row=7, sticky='nsew')
-	tags_dropdown.grid(row=8, sticky='nsew')
+	image_dropdown.grid(row=5, sticky='nsew')
+	url_dropdown.grid(row=6, sticky='nsew')
+	title_dropdown.grid(row=7, sticky='nsew')
+	description_dropdown.grid(row=8, sticky='nsew')
+	tags_dropdown.grid(row=9, sticky='nsew')
 
-	image_label.grid(row=4, column=1, sticky='nsew')
-	url_label.grid(row=5, column=1, sticky='nsew')
-	title_label.grid(row=6, column=1, sticky='nsew')
-	description_label.grid(row=7, column=1, sticky='nsew')
-	tags_label.grid(row=8, column=1, sticky='nsew')
+	image_label.grid(row=5, column=1, sticky='nsew')
+	url_label.grid(row=6, column=1, sticky='nsew')
+	title_label.grid(row=7, column=1, sticky='nsew')
+	description_label.grid(row=8, column=1, sticky='nsew')
+	tags_label.grid(row=9, column=1, sticky='nsew')
 	return
 
 
@@ -125,7 +125,14 @@ def tag_select(value) -> None:
 	return
 
 
+def task_in_progress() -> None:
+	task_label.config(text='Task in progress', bg='yellow')
+	root.update()
+	return None
+
+
 def printify_automation() -> None:
+	task_in_progress()
 	create_product_from_csv(
 		template=selected_template.get(),
 		publish=publish_bool.get(),
@@ -136,6 +143,7 @@ def printify_automation() -> None:
 		description_header=selected_description.get(),
 		tags_header=selected_tags.get()
 	)
+	task_label.config(text='Task finished', bg='#90EE90')
 	return
 
 
@@ -158,18 +166,18 @@ root.title('PMD Automation')
 root.minsize(555, 265)
 root.configure(padx=10, pady=10)
 # TODO: update for new widgets
-for i in range(12):
+for i in range(14):
 	root.grid_rowconfigure(i, weight=1, pad=15)
 for j in range(2):
 	root.grid_columnconfigure(j, weight=1, pad=15)
 
 # button to select files
 select_directory_button: tkinter.Button = tkinter.Button(root, text='Select file', command=select_csv)
-select_directory_button.grid(row=0, column=0, sticky='nsew')
+select_directory_button.grid(row=1, column=0, sticky='nsew')
 
 # MyDesign export csv
 selected_file_label: tkinter.Label = tkinter.Label(root, text='Chosen file: Null', bg='white',)
-selected_file_label.grid(row=0, column=1, sticky='nsew')
+selected_file_label.grid(row=1, column=1, sticky='nsew')
 selected_file: tkinter.StringVar = tkinter.StringVar()
 
 # Etsy publish check box
@@ -184,7 +192,7 @@ checkbox: tkinter.Checkbutton = tkinter.Checkbutton(
 	offvalue=0,
 	command=checkbox_bool
 )
-checkbox.grid(row=9, column=0, sticky='nsew')
+checkbox.grid(row=10, column=0, sticky='nsew')
 
 # template drop down
 templates: list[str] = [key for key in TEMPLATES_DICT]
@@ -192,14 +200,14 @@ selected_template: tkinter.StringVar = tkinter.StringVar(root)
 selected_template.set('Click to select Template')
 # noinspection PyTypeChecker
 dropdown: tkinter.OptionMenu = tkinter.OptionMenu(root, selected_template, *templates, command=template_select)
-dropdown.grid(row=2, column=0, sticky='nsew')
+dropdown.grid(row=3, column=0, sticky='nsew')
 # drop down label
 dropdown_label: tkinter.Label = tkinter.Label(text='Template: Null', bg='white')
-dropdown_label.grid(row=2, column=1, sticky='nsew')
+dropdown_label.grid(row=3, column=1, sticky='nsew')
 
 # Publish feedback
 publish_label: tkinter.Label = tkinter.Label(root, bg='white', text='Staying in Printify')
-publish_label.grid(row=9, column=1, sticky='nsew')
+publish_label.grid(row=10, column=1, sticky='nsew')
 
 # header routing vars and labels
 selected_image_name: tkinter.StringVar = tkinter.StringVar(root)
@@ -231,7 +239,11 @@ final_automation_button: tkinter.Button = tkinter.Button(
 	width=75,
 	bg='red'
 )
-final_automation_button.grid(row=10, column=0, columnspan=2, sticky='nsew')
+final_automation_button.grid(row=11, column=0, columnspan=2, sticky='nsew')
+
+# Task feed back
+task_label: tkinter.Label = tkinter.Label(text='No task started', bg='white')
+task_label.grid(row=0, columnspan=2, sticky='nsew')
 
 # Etsy tagger
 tagger_label: tkinter.Label = tkinter.Label(
@@ -242,7 +254,7 @@ tagger_label: tkinter.Label = tkinter.Label(
 	),
 	bg='white',
 )
-tagger_label.grid(row=11, column=0, columnspan=2, sticky='nsew')
+tagger_label.grid(row=13, column=0, columnspan=2, sticky='nsew')
 
 # Etsy tagger button
 etsy_tagger: tkinter.Button = tkinter.Button(
@@ -252,6 +264,6 @@ etsy_tagger: tkinter.Button = tkinter.Button(
 	width=75,
 	bg='pink'
 )
-etsy_tagger.grid(row=12, column=0, columnspan=2, sticky='nsew')
+etsy_tagger.grid(row=14, column=0, columnspan=2, sticky='nsew')
 
 root.mainloop()
