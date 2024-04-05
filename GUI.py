@@ -162,7 +162,6 @@ def etsy_tagging() -> None:
 
 
 def row_formatting() -> None:
-	# TODO: update for new widgets
 	for i in range(14):
 		root.grid_rowconfigure(i, weight=1, pad=15)
 	for j in range(2):
