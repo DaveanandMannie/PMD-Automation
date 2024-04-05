@@ -5,7 +5,13 @@ import os
 from Automation import create_product_from_csv, TEMPLATES_DICT
 from EtsyTags import login_etsy, update_tags, close_driver
 
-header_bools: list[bool] = []
+header_bools: dict[str:bool] = {
+	'image name': False,
+	'image url': False,
+	'title': False,
+	'description': False,
+	'tags': False
+}
 header_names: list[str] = []
 
 
@@ -48,17 +54,35 @@ def get_csv_headers(file_path: str) -> list[str]:
 
 
 def automations_check() -> None:
-	if False in header_bools:
+	if False in header_bools.values():
 		final_automation_button.config(bg='red')
 	elif selected_template.get() == 'Click to select Template':
 		final_automation_button.config(bg='red')
-	elif header_bools.count(True) == 5:
+	elif selected_file.get() == 'Error':
+		final_automation_button.config(bg='red')
+	else:
 		final_automation_button.config(bg='#90EE90')
+	return
 
 
 def select_csv() -> str:
-	file_path = filedialog.askopenfilename(title="select directory")
+	file_path: filedialog = filedialog.askopenfilename(title="select directory")
+	if not file_path:
+		selected_file_label.config(text='No file selected', bg='red')
+		selected_file.set('Error')
+		return 'Error'
+	if not os.path.isfile(file_path):
+		selected_file_label.config(text='File not found', bg='red')
+		selected_file.set('Error')
+		return 'Error'
+
 	file_name = os.path.basename(file_path)
+
+	if not file_name.lower().endswith('.csv'):
+		selected_file_label.config(text='Please selected .CSV', bg='red')
+		selected_file.set('Error')
+		return 'Error'
+
 	selected_file_label.config(text=f'Chosen file: {file_name}', bg='#90EE90')
 	selected_file.set(file_path)
 	get_csv_headers(file_path)
@@ -88,7 +112,7 @@ def template_select(value: str) -> str:
 
 def image_name_select(value) -> None:
 	if value:
-		header_bools.append(True)
+		header_bools['image name'] = True
 		image_label.config(text=f'Image column: {value}', bg='#90EE90')
 	automations_check()
 	return
@@ -96,7 +120,7 @@ def image_name_select(value) -> None:
 
 def url_select(value) -> None:
 	if value:
-		header_bools.append(True)
+		header_bools['image url'] = True
 		url_label.config(text=f'URL column: {value}', bg='#90EE90')
 	automations_check()
 	return
@@ -104,7 +128,7 @@ def url_select(value) -> None:
 
 def title_select(value) -> None:
 	if value:
-		header_bools.append(True)
+		header_bools['title'] = True
 		title_label.config(text=f'Title column: {value}', bg='#90EE90')
 	automations_check()
 	return
@@ -112,7 +136,7 @@ def title_select(value) -> None:
 
 def description_select(value) -> None:
 	if value:
-		header_bools.append(True)
+		header_bools['description'] = True
 		description_label.config(text=f'Description column: {value}', bg='#90EE90')
 	automations_check()
 	return
@@ -120,7 +144,7 @@ def description_select(value) -> None:
 
 def tag_select(value) -> None:
 	if value:
-		header_bools.append(True)
+		header_bools['tags'] = True
 		tags_label.config(text=f'Tags column: {value}', bg='#90EE90')
 	automations_check()
 	return
