@@ -4,7 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import time
 import random
-with open('New_Variables.txt') as file:
+with open('secrets.txt') as file:
 	for line in file:
 		key, value = line.strip().split('=')
 		os.environ[key] = value

@@ -5,7 +5,7 @@ import requests
 from typing import Union
 import Templates
 
-with open('New_Variables.txt') as f:
+with open('secrets.txt') as f:
 	for line in f:
 		key, value = line.strip().split('=')
 		os.environ[key] = value
