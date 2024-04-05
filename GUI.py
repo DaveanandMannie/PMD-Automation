@@ -166,6 +166,8 @@ def row_formatting() -> None:
 		root.grid_rowconfigure(i, weight=1, pad=15)
 	for j in range(2):
 		root.grid_columnconfigure(j, weight=1, pad=15)
+	root.update()
+	return
 
 
 # Main window logic
