@@ -11,13 +11,13 @@ with open('secrets.txt') as f:
 		os.environ[key] = value
 # Global variables
 PRINTIFY_API_KEY = os.environ.get('PRINTIFY_API_KEY')
-PRINT_GEEK_ID = 27
+PODP_ID = os.environ.get('PODP_ID')
 ENDPOINT_URL = 'https://api.printify.com/v1/'
 HEADERS = {
 	'Authorization': f'Bearer {PRINTIFY_API_KEY}',
 	'Content-Type': 'application/json;charset=utf-8'
 }
-ETSY_SHOP_ID = 15047741
+SHOP_ID = int(os.environ.get('SHOP_ID'))
 # TODO maybe move this to the templates file
 TEMPLATES_DICT: dict[str, type:Templates.Template] = {
 	'Gildan 5000': Templates.Popular_Gildan_5000,
@@ -28,7 +28,7 @@ TEMPLATES_DICT: dict[str, type:Templates.Template] = {
 
 def PrintGeek_blueprints_csv() -> None:
 	""" Creates a csv of all blueprints provided by Print Geek in project directory """
-	api_response = requests.get(ENDPOINT_URL + f'catalog/print_providers/{PRINT_GEEK_ID}.json/', headers=HEADERS)
+	api_response = requests.get(ENDPOINT_URL + f'catalog/print_providers/{PODP_ID}.json/', headers=HEADERS)
 	api_response.raise_for_status()
 	data = api_response.json()
 	blueprints_data = [(blueprint['id'], blueprint['title']) for blueprint in data['blueprints']]
@@ -115,7 +115,7 @@ def push_to_api(
 		'title': product_title,
 		'description': product_description,
 		'blueprint_id': blueprint_id,
-		'print_provider_id': PRINT_GEEK_ID,
+		'print_provider_id': PODP_ID,
 		'variants': list_of_variants_dict,
 		'tags': products_tags,
 		'print_areas': [
@@ -155,7 +155,7 @@ def push_to_api(
 def publish_product(product_id: str, publish_json: dict[str: bool]) -> requests.Response:
 	""" Publishes a product through the connected sales channel """
 	publish_response = requests.post(
-		ENDPOINT_URL + f'shops/{ETSY_SHOP_ID}/products/{product_id}/publish.json',
+		ENDPOINT_URL + f'shops/{SHOP_ID}/products/{product_id}/publish.json',
 		json=publish_json,
 		headers=HEADERS
 	)
@@ -200,7 +200,7 @@ def create_product_from_csv(
 				product_title=title,
 				product_description=description,
 				products_tags=tags,
-				shop_id=ETSY_SHOP_ID,
+				shop_id=SHOP_ID,
 				price=template_price,
 				product_variant_list=template_variants,
 				blueprint_id=template_blueprint
