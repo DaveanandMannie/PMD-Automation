@@ -36,10 +36,12 @@ Once the repository is cloned and the requirements are installed a few things ne
 * In your Printify shop you can create a shirt with your desired colours, print provider, and shirt make.
   * In ```Templates.py``` I have product data that is specific if the provider is PrintGeek it may not work with 
   provider
-  * If your created template is your only product call ```get_product_info(productid=get_first_product_id(SHOP_ID), SHOP_ID)```
+  * If your created template is your only product call ```get_product_info(productid=get_first_product_id(SHOP_ID), 
+SHOP_ID)```
   * This returns a dictionary with the necessary data to create a template instance in ```Templates.py```
 * Create a template object with your specified data 
-* In ```Automation.py``` add a key value pair to ```TEMPLATES_DICT``` they key being your title and value being the import of your template
+* In ```Automation.py``` add a key value pair to ```TEMPLATES_DICT``` they key being your title and value being the 
+import of your template
   * eg: ```{'Gildan 5000': Templates.Popular_Gildan_5000,}```
 * Make sure that ```secrets.txt``` is in the same directory as the scripts
 * In the working directory terminal call ```python GUI.py```
@@ -49,6 +51,15 @@ Once the repository is cloned and the requirements are installed a few things ne
   * Start the tagger via the UI assuming the CSV headers are assigned, wait for Etsy`s 2FA 
   * Enter the code and continue 
   * Watch the robots take over 🤖🤖🤖
+## Limitations
+* Currently, there are no publish actions; so if there is no integrated sales channels the publish feature doesn't do
+anything
+* The current tagger does not integrate with Etsy's API as I am still waiting for access
+* Custom mocks would need to be a per sales channel   solution and unless I have a need for it in production I will 
+not be spending time on it
+
+
+
 ## The future
 This will probably not be an ongoing development unless my employers move forward👷‍♂️👷‍♀️
 
