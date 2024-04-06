@@ -23,6 +23,8 @@ Aside from the Python packages in requirements.txt
  ## Optional Requirements
 * integrated sales channel via Printify
 ## Guide 
+* If using the pre-release all that is need is the Etsy login and the Printify API key
+
 Once the repository is cloned and the requirements are installed a few things need to be changed for the script to work.
 * In ```secrets.txt``` add your Printify API key after the ```=``` with no spaces
 * The ```get_all_shops()```  returns a dict of shop titles and their IDS. 
