@@ -43,6 +43,18 @@ def blueprints_csv() -> None:
 	return
 
 
+def get_all_print_providers() -> dict[str, int]:
+	response = requests.get(ENDPOINT_URL + f'catalog/print_providers.json/', headers=HEADERS)
+	response.raise_for_status()
+	data = response.json()
+	print_providers: dict[str, int] = {}
+	for provider in data:
+		provider_name: str = provider['title']
+		provider_id: int = provider['id']
+		print_providers[provider_name] = provider_id
+	return print_providers
+
+
 def get_all_shops() -> dict:
 	""" Returns a dictionary of shops and their ids on Printify """
 	shop_response = requests.get(ENDPOINT_URL + 'shops.json', headers=HEADERS)
@@ -90,7 +102,6 @@ def push_to_api(
 		shop_id: int,
 		blueprint_id: int
 ) -> str:
-
 	""" Takes all required Printify fields and sends a POST request through the API """
 	# pushes the image to the api -> consider making a separate function
 	image_data = {'file_name': image_name + '.png', 'url': image_url}
