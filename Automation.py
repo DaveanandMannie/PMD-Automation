@@ -26,7 +26,7 @@ TEMPLATES_DICT: dict[str, type:Templates.Template] = {
 }
 
 
-def PrintGeek_blueprints_csv() -> None:
+def blueprints_csv() -> None:
 	""" Creates a csv of all blueprints provided by Print Geek in project directory """
 	api_response = requests.get(ENDPOINT_URL + f'catalog/print_providers/{PODP_ID}.json/', headers=HEADERS)
 	api_response.raise_for_status()
