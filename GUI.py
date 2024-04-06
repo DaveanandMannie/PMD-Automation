@@ -180,6 +180,7 @@ def printify_automation() -> None:
 		task_label.config(text='Task finished', bg='#90EE90')
 	except Exception as error:
 		logging.error(f'Error in printify_automation: {error}', exc_info=True)
+		task_label.config(text='An error occurred. Please check log file', bg='red')
 	return
 
 
@@ -196,6 +197,7 @@ def etsy_tagging() -> None:
 		close_driver(driver)
 	except Exception as error:
 		logging.error(f'Error in etsy_tagging: {error}', exc_info=True)
+		task_label.config(text='An error occurred. Please check log file', bg='red')
 	return
 
 
